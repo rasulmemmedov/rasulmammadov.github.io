@@ -2,20 +2,27 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rasul Mammadov | QA Automation Tester</title>
-    <!-- Google Fonts - Azərbaycan şrift dəstəyi üçün Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Şriftlər -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Animasiya Kitabxanası -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
         :root { 
             --main-blue: #0077b5; 
             --dark-blue: #004182;
             --light-bg: #f3f6f8; 
             --dark-text: #2d3436; 
+            --white-alpha: rgba(255, 255, 255, 0.95);
         }
         
+        * {
+            box-sizing: border-box;
+        }
+
         body { 
             font-family: 'Montserrat', sans-serif;
             margin: 0; 
@@ -23,21 +30,23 @@
             color: var(--dark-text); 
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
         }
 
-        /* 1. QAT: Başlığın Arxa Fonu */
+        /* --- ARXA FON VƏ HEADER --- */
         .header-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 500px;
+            height: 45vh; /* Mobildə hündürlüyü faizlə veririk */
+            min-height: 300px;
+            max-height: 500px;
             background: linear-gradient(135deg, #001f3f, #0077b5);
             z-index: 0;
             clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
 
-        /* 2. QAT: Zərrəciklər */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -48,228 +57,244 @@
             pointer-events: none;
         }
 
-        /* 3. QAT: Məzmun */
         header { 
             position: relative; 
-            padding: 80px 20px 120px;
+            padding: 60px 20px 80px;
             text-align: center; 
             z-index: 2;
-            background: transparent;
-        }
-
-        .header-content {
-            position: relative;
         }
 
         .header-content h1 {
-            font-size: 3rem;
-            margin-bottom: 0;
+            font-size: clamp(2rem, 5vw, 3.5rem); /* Dinamik şrift ölçüsü */
+            margin-bottom: 5px;
             color: white;
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-weight: 700;
         }
 
         .header-content p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.95;
             color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-top: 5px;
         }
 
+        /* --- DİL DƏYİŞDİRİCİ --- */
         .lang-switch { 
             position: absolute; 
             top: 20px; 
             right: 20px; 
             z-index: 100; 
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
         
         .lang-btn { 
-            background: rgba(255, 255, 255, 0.2); 
+            background: rgba(255, 255, 255, 0.15); 
             color: white; 
-            border: 1px solid rgba(255, 255, 255, 0.4); 
-            padding: 8px 12px; 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            padding: 6px 10px; 
             cursor: pointer; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-            font-family: inherit;
+            border-radius: 6px; 
+            font-weight: 600; 
             font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
         }
-        .lang-btn:hover { background: white; color: var(--main-blue); }
+        
+        .lang-btn.active, .lang-btn:hover { 
+            background: white; 
+            color: var(--main-blue); 
+        }
 
+        /* --- ƏSAS KONTEYNER --- */
         .container { 
+            width: 92%; /* Mobildə ekranın 92%-ni tutsun */
             max-width: 850px; 
             margin: -60px auto 40px; 
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+            background: var(--white-alpha); 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
             position: relative; 
             z-index: 2; 
             backdrop-filter: blur(10px);
-            width: 90%;
         }
 
-        .friends-content h3 {
-            margin-top: 60px;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+        h3 {
+            font-size: 1.4rem;
             color: var(--main-blue);
+            margin-top: 40px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #eee;
-            padding-bottom: 8px;
-            position: relative;
-            font-weight: 700;
+            padding-bottom: 10px;
+            display: inline-block;
         }
 
-        .friends-content h3::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: var(--main-blue);
-        }
-
+        /* --- TEXNİKİ BACARIQLAR (TAGS) --- */
         .skill-group { 
             display: flex; 
             flex-wrap: wrap; 
-            gap: 10px; 
-            margin-bottom: 20px; 
+            gap: 12px; 
         }
         
         .skill-tag { 
-            background: #e1e9ee; 
+            background: #eff4f8; 
             color: #004182; 
-            padding: 10px 18px; 
+            padding: 10px 16px; 
             border-radius: 8px; 
             font-weight: 600; 
-            font-size: 0.85em; 
-            transition: 0.3s ease; 
-            border: 1px solid transparent;
+            font-size: 0.9rem; 
+            transition: 0.2s ease; 
             cursor: pointer;
             user-select: none;
-        }
-        
-        @media (hover: hover) {
-            .skill-tag:hover { 
-                transform: translateY(-3px) scale(1.03); 
-                background: white; 
-                color: var(--main-blue);
-                border-color: var(--main-blue);
-                box-shadow: 0 5px 15px rgba(0,119,181,0.2);
-            }
+            border: 1px solid transparent;
+            /* Mobil toxunuş üçün optimizasiya */
+            active-behavior: contain;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
 
+        .skill-tag:active, .skill-tag:hover {
+            background: white;
+            border-color: var(--main-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,119,181,0.15);
+        }
+
+        /* --- TƏHSİL VƏ ƏLAQƏ --- */
         .edu-item { 
             border-left: 4px solid var(--main-blue); 
             padding: 15px 20px; 
             margin: 20px 0; 
-            background: rgba(252, 252, 252, 0.6);
+            background: rgba(240, 244, 248, 0.5);
             border-radius: 0 8px 8px 0;
-            transition: 0.3s;
+        }
+
+        .contact-wrapper {
+            text-align: center;
+            margin-top: 40px;
         }
 
         .contact-btn { 
             display: inline-block; 
             background: var(--main-blue); 
             color: white; 
-            padding: 15px 35px; 
+            padding: 16px 40px; 
             text-decoration: none; 
             border-radius: 50px; 
-            font-weight: bold; 
-            transition: 0.4s; 
-            margin-top: 20px; 
+            font-weight: 700; 
+            transition: 0.3s; 
             box-shadow: 0 4px 15px rgba(0,119,181,0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 1rem;
+        }
+        
+        .contact-btn:active {
+            transform: scale(0.98);
         }
 
-        .lang-en { display: none; }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 0.85em;
-            color: #888;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* --- MODAL STİLLƏRİ --- */
+        /* --- MODAL (POP-UP) --- */
         .modal {
             display: none; 
             position: fixed; 
-            z-index: 1000; 
+            z-index: 9999; 
             left: 0;
             top: 0;
             width: 100%; 
             height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.7); 
-            backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s;
+            background-color: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 25% auto; 
-            padding: 25px;
-            border: none;
-            width: 80%; 
+            background-color: white;
+            padding: 30px 25px;
+            border-radius: 16px;
+            width: 100%; 
             max-width: 450px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
-            animation: slideUp 0.3s;
             text-align: center;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .close-modal {
-            color: #333;
             position: absolute;
             top: 10px;
             right: 15px;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            color: #888;
             cursor: pointer;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background: #f5f5f5;
         }
 
-        /* --- RESPONSIVE / MOBİL AYARLAR --- */
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lang-en { display: none; }
+        
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* --- MEDIA QUERIES (XÜSUSİ MOBİL AYARLAR) --- */
         @media screen and (max-width: 768px) {
-            .header-bg { height: 400px; }
-            header { padding: 60px 15px 100px; }
-            .header-content h1 { font-size: 2.2rem; }
-            .header-content p { font-size: 1rem; }
-            
-            .container { 
-                padding: 25px 20px; 
+            .container {
+                padding: 25px 20px;
                 margin-top: -50px;
-                width: 85%;
+                width: 90%;
             }
-            
-            .friends-content h3 { margin-top: 40px; font-size: 1.3em; }
-            .skill-tag { padding: 8px 14px; font-size: 0.8em; }
-            
-            .modal-content { margin: 40% auto; width: 85%; }
         }
 
         @media screen and (max-width: 480px) {
-            .header-content h1 { font-size: 1.8rem; }
-            .lang-switch { top: 15px; right: 10px; }
-            .lang-btn { padding: 6px 10px; font-size: 0.75rem; }
-            .contact-btn { width: 100%; box-sizing: border-box; }
-        }
+            .header-bg {
+                min-height: 250px;
+                height: 40vh;
+            }
+            
+            header {
+                padding-top: 50px;
+            }
 
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-        @keyframes slideUp { from {transform: translateY(30px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+            .lang-switch {
+                top: 15px;
+                right: 15px;
+            }
+
+            .container {
+                width: 95%; /* Ekranın kənarına daha yaxın */
+                padding: 20px 15px;
+                margin-top: -40px;
+            }
+
+            h3 {
+                margin-top: 30px;
+                font-size: 1.2rem;
+            }
+
+            .skill-tag {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                flex-grow: 1; /* Taglar mobildə eni doldursun */
+                text-align: center;
+            }
+
+            .contact-btn {
+                width: 100%; /* Düymə tam enli olsun */
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -277,18 +302,19 @@
 <div class="header-bg"></div>
 <canvas id="particle-canvas"></canvas>
 
-<div id="skill-modal" class="modal">
+<!-- Modal -->
+<div id="skill-modal" class="modal" onclick="closeModalOutside(event)">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal()">&times;</span>
-        <h2 id="modal-title">Başlıq</h2>
-        <p id="modal-desc">İzahat</p>
+        <h3 id="modal-title" style="margin-top: 10px; border: none;">Başlıq</h3>
+        <p id="modal-desc" style="font-size: 1rem; color: #555;">İzahat</p>
     </div>
 </div>
 
 <header>
     <div class="lang-switch">
-        <button class="lang-btn" onclick="setLanguage('az')">AZ</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn active" id="btn-az" onclick="setLanguage('az')">AZ</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
     <div class="header-content">
         <h1 data-aos="fade-down">Rəsul Məmmədov</h1>
@@ -297,83 +323,102 @@
     </div>
 </header>
 
-<div class="container" data-aos="fade-up" data-aos-delay="200">
-    <section class="friends-content">
-        <div class="lang-az">
-            <h3 data-aos="fade-right">Haqqımda</h3>
-            <p>Mən Rəsul, proqram təminatının keyfiyyətinə (QA) fokuslanmış bir mütəxəssisəm. Manual və Automation test prosesləri üzrə dərin biliklərə sahibəm. SQL vasitəsilə verilənlər bazası testlərini həyata keçirir və sistemin qüsursuz işləməsini təmin edirəm.</p>
+<div class="container" data-aos="fade-up">
+    
+    <!-- AZƏRBAYCAN DİLİ -->
+    <div class="lang-az">
+        <section>
+            <h3>Haqqımda</h3>
+            <p>Salam, mən Rəsul. Proqram təminatının keyfiyyətinə (QA) fokuslanmış mütəxəssisəm. Manual və Automation test prosesləri, həmçinin SQL ilə verilənlər bazası yoxlanışları üzrə təcrübəyə sahibəm.</p>
+        </section>
 
-            <h3 data-aos="fade-right">Texniki Bacarıqlar</h3>
-            <p style="font-size: 0.85em; color: #666; margin-bottom: 15px;">(Ətraflı məlumat üçün üzərinə klikləyin)</p>
+        <section>
+            <h3>Texniki Bacarıqlar</h3>
+            <p style="font-size: 0.8rem; color: #999; margin-bottom: 15px; font-style: italic;">(Ətraflı məlumat üçün klikləyin)</p>
             <div class="skill-group">
-                <span class="skill-tag" data-aos="zoom-in" onclick="openModal('Manual Testing', 'İstifadəçi gözü ilə proqramın test edilməsi. Test ssenariləri (Test Cases) hazırlanır və əl ilə icra edilir.')">Manual Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="50" onclick="openModal('Automation Testing', 'Təkrarlanan testlərin kodlar və alətlər (Selenium, Cypress və s.) vasitəsilə avtomatik icra edilməsi.')">Automation Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="100" onclick="openModal('SQL (Database Testing)', 'Verilənlər bazasındakı məlumatların düzgünlüyünü və bütövlüyünü yoxlamaq üçün sorğuların (queries) yazılması.')">SQL (Database Testing)</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="150" onclick="openModal('Bug Reporting', 'Tapılan xətaların (bug) Jira və ya bənzər alətlərdə detallı şəkildə sənədləşdirilməsi və izlənilməsi.')">Bug Reporting</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="200" onclick="openModal('SDLC / STLC', 'Proqram Təminatının Həyat Dövrü (SDLC) və Proqram Test Həyat Dövrü (STLC) proseslərinin mərhələlərinə bələdlik.')">SDLC / STLC</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="250" onclick="openModal('API Testing', 'Tətbiqlər arası əlaqəni təmin edən API-ların Postman kimi alətlərlə test edilməsi.')">API Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="300" onclick="openModal('GitHub', 'Versiya idarəetmə sistemi. Kodların və test skriptlərinin saxlanması, idarə edilməsi və komanda işi.')">GitHub</span>
+                <span class="skill-tag" onclick="openModal('Manual Testing', 'İstifadəçi gözü ilə proqramın test edilməsi. Test ssenariləri (Test Cases) hazırlanır və əl ilə icra edilir.')">Manual Testing</span>
+                <span class="skill-tag" onclick="openModal('Automation Testing', 'Selenium və Cypress kimi alətlərlə təkrarlanan testlərin avtomatlaşdırılması.')">Automation Testing</span>
+                <span class="skill-tag" onclick="openModal('SQL / Database', 'Məlumatların düzgünlüyünü və bütövlüyünü yoxlamaq üçün SQL sorğularının yazılması.')">SQL (Database)</span>
+                <span class="skill-tag" onclick="openModal('Bug Reporting', 'Xətaların (Bug) Jira alətində detallı sənədləşdirilməsi və izlənilməsi.')">Bug Reporting (Jira)</span>
+                <span class="skill-tag" onclick="openModal('API Testing', 'Postman vasitəsilə server sorğularının (API) test edilməsi.')">API Testing</span>
+                <span class="skill-tag" onclick="openModal('GitHub', 'Versiya idarəetmə sistemi. Kodların və test skriptlərinin idarə edilməsi.')">GitHub / Git</span>
             </div>
+        </section>
 
-            <h3 data-aos="fade-right">Təhsil</h3>
-            <div class="edu-item" data-aos="fade-left">
+        <section>
+            <h3>Təhsil</h3>
+            <div class="edu-item">
                 <strong>Azərbaycan Dövlət Aqrar Universiteti</strong><br>
-                <span>Məzun / Tələbə</span>
+                <span style="color: #666; font-size: 0.9em;">Bakalavr dərəcəsi</span>
             </div>
+        </section>
 
-            <div style="text-align: center;">
-                <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">LinkedIn Profilim</a>
-            </div>
+        <div class="contact-wrapper">
+            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">LinkedIn Profilim</a>
         </div>
+    </div>
 
-        <div class="lang-en">
+    <!-- İNGİLİS DİLİ -->
+    <div class="lang-en">
+        <section>
             <h3>About Me</h3>
-            <p>I am Rasul, a QA specialist focused on software quality. I have expertise in Manual and Automation testing processes. I perform database verification using SQL and ensure seamless system performance.</p>
+            <p>I am Rasul, a QA specialist focused on software quality assurance. I have expertise in both Manual and Automation testing processes, as well as database verification using SQL.</p>
+        </section>
 
+        <section>
             <h3>Technical Skills</h3>
-            <p style="font-size: 0.85em; color: #666; margin-bottom: 15px;">(Click on skills for details)</p>
+            <p style="font-size: 0.8rem; color: #999; margin-bottom: 15px; font-style: italic;">(Click to see details)</p>
             <div class="skill-group">
-                <span class="skill-tag" onclick="openModal('Manual Testing', 'Testing software from a user perspective. Test cases are created and executed manually.')">Manual Testing</span>
-                <span class="skill-tag" onclick="openModal('Automation Testing', 'Using code and tools (like Selenium, Cypress) to execute repetitive tests automatically.')">Automation Testing</span>
-                <span class="skill-tag" onclick="openModal('SQL (Database Testing)', 'Writing queries to verify the accuracy and integrity of data within the database.')">SQL (Database Testing)</span>
-                <span class="skill-tag" onclick="openModal('Bug Reporting', 'Documenting and tracking found defects (bugs) in detail using tools like Jira.')">Bug Reporting</span>
-                <span class="skill-tag" onclick="openModal('SDLC / STLC', 'Knowledge of the phases in the Software Development Life Cycle (SDLC) and Software Testing Life Cycle (STLC).')">SDLC / STLC</span>
-                <span class="skill-tag" onclick="openModal('API Testing', 'Verifying that application programming interfaces (APIs) function correctly using tools like Postman.')">API Testing</span>
-                <span class="skill-tag" onclick="openModal('GitHub', 'Version control system. Storing, managing, and collaborating on code and test scripts.')">GitHub</span>
+                <span class="skill-tag" onclick="openModal('Manual Testing', 'Testing software from a user perspective via manually executed test cases.')">Manual Testing</span>
+                <span class="skill-tag" onclick="openModal('Automation Testing', 'Automating repetitive tests using tools like Selenium and Cypress.')">Automation Testing</span>
+                <span class="skill-tag" onclick="openModal('SQL / Database', 'Writing SQL queries to verify data integrity and accuracy.')">SQL (Database)</span>
+                <span class="skill-tag" onclick="openModal('Bug Reporting', 'Documenting and tracking defects using tools like Jira.')">Bug Reporting (Jira)</span>
+                <span class="skill-tag" onclick="openModal('API Testing', 'Testing Application Programming Interfaces (APIs) using Postman.')">API Testing</span>
+                <span class="skill-tag" onclick="openModal('GitHub', 'Version control system for managing code and test scripts.')">GitHub / Git</span>
             </div>
+        </section>
 
+        <section>
             <h3>Education</h3>
             <div class="edu-item">
                 <strong>Azerbaijan State Agricultural University</strong><br>
-                <span>Graduate / Student</span>
+                <span style="color: #666; font-size: 0.9em;">Bachelor's Degree</span>
             </div>
+        </section>
 
-            <div style="text-align: center;">
-                <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">Connect on LinkedIn</a>
-            </div>
+        <div class="contact-wrapper">
+            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">Connect on LinkedIn</a>
         </div>
-    </section>
+    </div>
+
 </div>
 
 <footer>
-    &copy; 2026 Rəsul Məmmədov. Bütün hüquqlar qorunur.
+    &copy; 2026 Rəsul Məmmədov.
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({ duration: 1000, once: true });
+    // Animasiyanı başladır
+    AOS.init({ 
+        duration: 800, 
+        once: true,
+        offset: 50 // Mobildə animasiya daha tez başlasın
+    });
 
+    // Dil dəyişmə funksiyası
     function setLanguage(lang) {
-        if (lang === 'az') {
-            document.querySelectorAll('.lang-az').forEach(el => el.style.display = 'block');
-            document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
-        } else {
-            document.querySelectorAll('.lang-az').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'block');
-        }
-        AOS.refresh();
+        document.querySelectorAll('.lang-az').forEach(el => el.style.display = lang === 'az' ? 'block' : 'none');
+        document.querySelectorAll('.lang-en').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+        
+        // Aktiv düymə rəngini dəyişmək
+        document.getElementById('btn-az').classList.toggle('active', lang === 'az');
+        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        
+        AOS.refresh(); // Animasiyaları yenilə
     }
 
+    // Modal funksiyaları
     const modal = document.getElementById("skill-modal");
     const modalTitle = document.getElementById("modal-title");
     const modalDesc = document.getElementById("modal-desc");
@@ -381,8 +426,8 @@
     function openModal(title, desc) {
         modalTitle.innerText = title;
         modalDesc.innerText = desc;
-        modal.style.display = "block";
-        document.body.style.overflow = 'hidden'; // Modal açılanda səhifə sürüşməsin
+        modal.style.display = "flex"; // Mobildə mərkəzləmək üçün flex
+        document.body.style.overflow = 'hidden'; 
     }
 
     function closeModal() {
@@ -390,54 +435,55 @@
         document.body.style.overflow = 'auto';
     }
 
-    window.onclick = function(event) {
-        if (event.target == modal) closeModal();
+    // Modalın kənarına basdıqda bağlansın
+    function closeModalOutside(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
     }
 
-    // --- CANVAS PARTICLE ENGINE (Optimized for performance) ---
+    // --- CANVAS PARTICLE ENGINE (Optimized) ---
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let animationId;
-
-    function initCanvas() {
+    
+    function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
+    resizeCanvas();
 
     class Particle {
         constructor() {
-            this.init();
-        }
-        init() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 1;
-            this.speedX = Math.random() * 0.6 - 0.3;
-            this.speedY = Math.random() * 0.6 - 0.3;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = Math.random() * 0.4 - 0.2;
+            this.speedY = Math.random() * 0.4 - 0.2;
         }
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
             if (this.x > canvas.width) this.x = 0;
-            if (this.x < 0) this.x = canvas.width;
+            else if (this.x < 0) this.x = canvas.width;
             if (this.y > canvas.height) this.y = 0;
-            if (this.y < 0) this.y = canvas.height;
+            else if (this.y < 0) this.y = canvas.height;
         }
         draw() {
-            ctx.fillStyle = this.y < 500 ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 119, 181, 0.4)';
+            ctx.fillStyle = 'rgba(0, 119, 181, 0.3)';
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
         }
     }
 
-    function createParticles() {
+    function initParticles() {
         particles = [];
-        // Mobil üçün zərrəcik sayını azaldırıq (performans üçün)
-        const density = window.innerWidth < 768 ? 20 : 10;
-        const particleCount = Math.min(Math.floor(window.innerWidth / density), 80);
-        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+        // Mobildə cəmi 25 zərrəcik olsun (performans üçün), PC-də 60
+        const count = window.innerWidth < 768 ? 25 : 60;
+        for (let i = 0; i < count; i++) {
+            particles.push(new Particle());
+        }
     }
 
     function animate() {
@@ -445,39 +491,36 @@
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
+            // Xətlər
             for (let j = i; j < particles.length; j++) {
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 100) {
-                    const opacity = 1 - distance / 100;
-                    const midY = (particles[i].y + particles[j].y) / 2;
-                    ctx.strokeStyle = midY < 500 ? `rgba(255, 255, 255, ${opacity * 0.4})` : `rgba(0, 119, 181, ${opacity * 0.2})`;
-                    ctx.lineWidth = 0.5;
                     ctx.beginPath();
+                    ctx.strokeStyle = `rgba(0, 119, 181, ${0.15 - distance/700})`;
+                    ctx.lineWidth = 0.5;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
                     ctx.stroke();
                 }
             }
         }
-        animationId = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
     }
 
     window.addEventListener('resize', () => {
-        initCanvas();
-        createParticles();
+        resizeCanvas();
+        initParticles();
     });
 
-    window.onload = function() {
-        initCanvas();
-        createParticles();
-        animate();
-    };
+    initParticles();
+    animate();
 </script>
 
 </body>
 </html>
+
 
 
 
