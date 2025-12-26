@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasul Mammadov | QA Tester Portfolio</title>
+    <title>Rasul Mammadov | QA Automation Tester</title>
+    <!-- Animasiya Kitabxanası -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --main-blue: #0077b5; --light-bg: #f3f6f8; --dark-text: #2d3436; }
+        :root { 
+            --main-blue: #0077b5; 
+            --dark-blue: #004182;
+            --light-bg: #f3f6f8; 
+            --dark-text: #2d3436; 
+        }
         
         body { 
             font-family: 'Segoe UI', Tahoma, sans-serif; 
@@ -16,39 +22,74 @@
             overflow-x: hidden;
         }
 
-        /* Arxa fon hərəkəti */
-        header { 
-            background: linear-gradient(-45deg, #0077b5, #00a0dc, #004182, #0077b5);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: white; 
-            padding: 80px 20px; 
-            text-align: center; 
-            position: relative; 
+        /* 1. QAT: Başlığın Arxa Fonu (Ən arxa) */
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 500px; /* Header hündürlüyü qədər */
+            background: linear-gradient(135deg, #001f3f, #0077b5);
+            z-index: 0;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); /* Bir az əyilmiş müasir kəsim */
         }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* 2. QAT: Zərrəciklər (Fonun üstündə) */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; 
+            pointer-events: none;
+        }
+
+        /* 3. QAT: Məzmun (Ən öndə) */
+        header { 
+            position: relative; 
+            padding: 100px 20px 150px; /* Aşağı boşluq artırıldı */
+            text-align: center; 
+            z-index: 2; /* Canvas-ın üstündə */
+            background: transparent; /* Şəffaf olsun ki, arxadakı canvas görünsün */
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .header-content h1, .header-content p {
+            color: white; /* Header yazıları mütləq ağ olsun */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .lang-switch { position: absolute; top: 20px; right: 20px; z-index: 100; }
         .lang-btn { 
-            background: white; color: var(--main-blue); border: none; 
-            padding: 8px 15px; cursor: pointer; border-radius: 5px; 
-            font-weight: bold; margin-left: 5px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.2); 
+            color: white; 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            padding: 8px 15px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            margin-left: 5px; 
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
-        .lang-btn:hover { transform: scale(1.1); background: #eee; }
+        .lang-btn:hover { background: white; color: var(--main-blue); }
 
         .container { 
-            max-width: 850px; margin: -50px auto 40px; 
-            background: white; padding: 40px; border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            position: relative; z-index: 10;
+            max-width: 850px; 
+            margin: -80px auto 40px; /* Yuxarı sürüşdürdüm ki, header-in içinə girsin */
+            background: rgba(255, 255, 255, 0.9); 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+            position: relative; 
+            z-index: 2; 
+            backdrop-filter: blur(10px);
         }
 
-        /* Sənin xüsusi CSS tələblərin */
         .friends-content h3 {
             margin-top: 60px;
             margin-bottom: 15px;
@@ -56,61 +97,121 @@
             color: var(--main-blue);
             border-bottom: 2px solid #eee;
             padding-bottom: 8px;
+            position: relative;
+        }
+
+        .friends-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--main-blue);
         }
 
         .skill-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         
         .skill-tag { 
-            background: #e1e9ee; color: #004182; padding: 8px 18px; 
-            border-radius: 20px; font-weight: 600; font-size: 0.9em; 
-            transition: 0.3s; 
+            background: #e1e9ee; 
+            color: #004182; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-size: 0.9em; 
+            transition: 0.4s ease; 
+            border: 1px solid transparent;
         }
-        .skill-tag:hover { transform: translateY(-5px); background: var(--main-blue); color: white; }
+        .skill-tag:hover { 
+            transform: translateY(-5px) scale(1.05); 
+            background: white; 
+            color: var(--main-blue);
+            border-color: var(--main-blue);
+            box-shadow: 0 5px 15px rgba(0,119,181,0.2);
+        }
 
         .edu-item { 
-            border-left: 3px solid var(--main-blue); 
-            padding-left: 15px; margin: 15px 0; 
+            border-left: 4px solid var(--main-blue); 
+            padding: 15px 20px; 
+            margin: 20px 0; 
+            background: rgba(252, 252, 252, 0.6);
+            border-radius: 0 8px 8px 0;
             transition: 0.3s;
         }
-        .edu-item:hover { background: #f9f9f9; padding-left: 20px; }
+        .edu-item:hover { 
+            background: #f0f7fb; 
+            transform: translateX(10px);
+        }
 
         .contact-btn { 
-            display: inline-block; background: var(--main-blue); 
-            color: white; padding: 12px 35px; text-decoration: none; 
-            border-radius: 50px; font-weight: bold; transition: 0.4s; 
-            margin-top: 20px; box-shadow: 0 4px 15px rgba(0,119,181,0.3);
+            display: inline-block; 
+            background: var(--main-blue); 
+            color: white; 
+            padding: 15px 40px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            transition: 0.4s; 
+            margin-top: 20px; 
+            box-shadow: 0 4px 15px rgba(0,119,181,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .contact-btn:hover { background: #005a8a; transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,119,181,0.5); }
+        .contact-btn:hover { 
+            background: var(--dark-blue); 
+            transform: scale(1.05); 
+            box-shadow: 0 8px 25px rgba(0,119,181,0.5); 
+        }
 
         .lang-en { display: none; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9em;
+            color: #888;
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
 
+<!-- 1. QAT: Mavi Arxa Fon -->
+<div class="header-bg"></div>
+
+<!-- 2. QAT: Canvas -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- 3. QAT: Məzmun -->
 <header>
     <div class="lang-switch">
         <button class="lang-btn" onclick="setLanguage('az')">AZ</button>
         <button class="lang-btn" onclick="setLanguage('en')">EN</button>
     </div>
-    <h1 data-aos="fade-down">Rasul Mammadov</h1>
-    <p class="lang-az" data-aos="fade-up">QA Automation & Manual Tester</p>
-    <p class="lang-en" data-aos="fade-up">QA Automation & Manual Tester</p>
+    <div class="header-content">
+        <h1 data-aos="fade-down" style="font-size: 3rem; margin-bottom: 0;">Rasul Mammadov</h1>
+        <p class="lang-az" data-aos="fade-up" style="font-size: 1.2rem; opacity: 0.9;">QA Automation & Manual Tester</p>
+        <p class="lang-en" data-aos="fade-up" style="font-size: 1.2rem; opacity: 0.9;">QA Automation & Manual Tester</p>
+    </div>
 </header>
 
-<div class="container" data-aos="zoom-in" data-aos-delay="200">
+<div class="container" data-aos="fade-up" data-aos-delay="200">
     <section class="friends-content">
+        <!-- AZERBAIJANI CONTENT -->
         <div class="lang-az">
             <h3 data-aos="fade-right">Haqqımda</h3>
-            <p>Mən Rasul, proqram təminatının keyfiyyətinə (QA) fokuslanmış bir mütəxəssisəm. Manual və Automation (Avtomatlaşdırılmış) test prosesləri üzrə biliklərə sahibəm. SQL vasitəsilə məlumat bazasının yoxlanılmasını həyata keçirirəm.</p>
+            <p>Mən Rasul, proqram təminatının keyfiyyətinə (QA) fokuslanmış bir mütəxəssisəm. Manual və Automation test prosesləri üzrə dərin biliklərə sahibəm. SQL vasitəsilə verilənlər bazası testlərini həyata keçirir və sistemin qüsursuz işləməsini təmin edirəm.</p>
 
-            <h3 data-aos="fade-right">Bacarıqlar</h3>
+            <h3 data-aos="fade-right">Texniki Bacarıqlar</h3>
             <div class="skill-group">
-                <span class="skill-tag" data-aos="flip-left">Manual Testing</span>
-                <span class="skill-tag" data-aos="flip-left" data-aos-delay="100">Automation Testing</span>
-                <span class="skill-tag" data-aos="flip-left" data-aos-delay="200">SQL (Database Testing)</span>
-                <span class="skill-tag" data-aos="flip-left" data-aos-delay="300">Bug Reporting</span>
-                <span class="skill-tag" data-aos="flip-left" data-aos-delay="400">SDLC / STLC</span>
-                <span class="skill-tag" data-aos="flip-left" data-aos-delay="500">GitHub</span>
+                <span class="skill-tag" data-aos="zoom-in">Manual Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="50">Automation Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="100">SQL (Database Testing)</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="150">Bug Reporting</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="200">SDLC / STLC</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="250">API Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="300">GitHub</span>
             </div>
 
             <h3 data-aos="fade-right">Təhsil</h3>
@@ -119,33 +220,43 @@
                 <span>Məzun / Tələbə</span>
             </div>
 
-            <a href="#" class="contact-btn" data-aos="fade-up">LinkedIn ilə əlaqə</a>
+            <div style="text-align: center;">
+                <a href="https://www.linkedin.com/in/rasul-mammadov" target="_blank" class="contact-btn">LinkedIn Profilim</a>
+            </div>
         </div>
 
+        <!-- ENGLISH CONTENT -->
         <div class="lang-en">
-            <h3 data-aos="fade-right">About Me</h3>
-            <p>I am Rasul, a QA specialist focused on software quality. I have expertise in Manual and Automation testing processes. I perform database verification using SQL.</p>
+            <h3>About Me</h3>
+            <p>I am Rasul, a QA specialist focused on software quality. I have expertise in Manual and Automation testing processes. I perform database verification using SQL and ensure seamless system performance.</p>
 
-            <h3 data-aos="fade-right">Skills</h3>
+            <h3>Technical Skills</h3>
             <div class="skill-group">
                 <span class="skill-tag">Manual Testing</span>
                 <span class="skill-tag">Automation Testing</span>
                 <span class="skill-tag">SQL (Database Testing)</span>
                 <span class="skill-tag">Bug Reporting</span>
                 <span class="skill-tag">SDLC / STLC</span>
+                <span class="skill-tag">API Testing</span>
                 <span class="skill-tag">GitHub</span>
             </div>
 
-            <h3 data-aos="fade-right">Education</h3>
+            <h3>Education</h3>
             <div class="edu-item">
                 <strong>Azerbaijan State Agricultural University</strong><br>
                 <span>Graduate / Student</span>
             </div>
 
-            <a href="#" class="contact-btn">Connect on LinkedIn</a>
+            <div style="text-align: center;">
+                <a href="https://www.linkedin.com/in/rasul-mammadov" target="_blank" class="contact-btn">Connect on LinkedIn</a>
+            </div>
         </div>
     </section>
 </div>
+
+<footer>
+    &copy; 2024 Rasul Mammadov. All rights reserved.
+</footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
@@ -159,8 +270,100 @@
             document.querySelectorAll('.lang-az').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'block');
         }
-        AOS.refresh(); // Dil dəyişəndə animasiyaları yenilə
+        AOS.refresh();
     }
+
+    // --- YENİLƏNMİŞ CANVAS MƏNTİQİ ---
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 0.8 - 0.4;
+            this.speedY = Math.random() * 0.8 - 0.4;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+            // ƏGƏR zərrəcik yuxarıdadırsa (header-in içində) -> AĞ
+            // ƏGƏR aşağıdadırsa -> GÖY
+            // Artıq scroll-a yox, zərrəciyin Y koordinatına baxırıq
+            if (this.y < 500) {
+                 ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            } else {
+                 ctx.fillStyle = 'rgba(0, 119, 181, 0.6)';
+            }
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function createParticles() {
+        particles = [];
+        const particleCount = Math.min(Math.floor(window.innerWidth / 10), 100);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            for (let j = i; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 120) {
+                    const opacity = 1 - distance / 120;
+                    
+                    // Xətlərin rəngini də yerləşdiyi yerə görə təyin et
+                    // Ortalamanı götürürük (iki nöqtənin ortası)
+                    const midY = (particles[i].y + particles[j].y) / 2;
+
+                    if (midY < 500) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.5})`;
+                    } else {
+                        ctx.strokeStyle = `rgba(0, 119, 181, ${opacity * 0.3})`;
+                    }
+
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+        initCanvas();
+        createParticles();
+    });
+
+    initCanvas();
+    createParticles();
+    animate();
 </script>
 
 </body>
