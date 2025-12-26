@@ -3,54 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasul Mammadov | Portfolyo</title>
+    <title>Rasul Mammadov | QA Automation Tester</title>
     <style>
-        :root { --main-blue: #0077b5; --light-bg: #f3f6f8; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--light-bg); color: #333; }
+        :root { --main-blue: #0077b5; --light-bg: #f3f6f8; --dark-text: #2d3436; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--light-bg); color: var(--dark-text); }
         header { background: var(--main-blue); color: white; padding: 60px 20px; text-align: center; }
-        .container { max-width: 850px; margin: -40px auto 40px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { margin: 0; font-size: 2.5rem; }
+        .container { max-width: 850px; margin: -40px auto 40px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        /* Özel CSS isteğin buraya entegre edildi */
+        /* Kişiselleştirilmiş Başlık Ayarın */
         .friends-content h3 {
             margin-top: 60px;
             margin-bottom: 15px;
             font-size: 1.5em;
             color: var(--main-blue);
             border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
         }
-        
-        .skill-tag { display: inline-block; background: #e1e9ee; color: #004182; padding: 5px 15px; border-radius: 15px; margin: 5px; font-weight: 600; }
-        .contact-btn { display: inline-block; background: var(--main-blue); color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-weight: bold; }
+
+        .skill-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .skill-tag { background: #e1e9ee; color: #004182; padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .edu-item { border-left: 3px solid var(--main-blue); padding-left: 15px; margin: 15px 0; }
+        .contact-btn { display: inline-block; background: var(--main-blue); color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+        .contact-btn:hover { background: #005a8a; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Rasul Mammadov</h1>
-    <p>Geleceğin Yazılım Geliştiricisi</p>
+    <p>QA Automation & Manual Tester</p>
 </header>
 
 <div class="container">
     <section class="friends-content">
         <h3>Hakkımda</h3>
-        <p>Merhaba! Ben Rasul. Yazılım dünyasına olan tutkumla kendimi sürekli geliştiriyor ve yeni teknolojiler öğreniyorum. Bu portfolyo, LinkedIn ağındaki profesyonellerle bağlantı kurmak ve projelerimi paylaşmak için oluşturulmuştur.</p>
-        
+        <p>Yazılım kalitesini en üst düzeye çıkarmaya odaklanmış bir QA Tester olarak; Manuel ve Otomasyon test süreçlerinde deneyim sahibiyim. Veri tabanı doğrulama süreçleri için SQL kullanarak uçtan uca test senaryoları geliştiriyorum.</p>
+
         <h3>Yeteneklerim</h3>
-        <div class="skill-tags">
-            <span class="skill-tag">HTML5</span>
-            <span class="skill-tag">CSS3</span>
-            <span class="skill-tag">JavaScript</span>
+        <div class="skill-group">
+            <span class="skill-tag">Manual Testing</span>
+            <span class="skill-tag">Test Automation</span>
+            <span class="skill-tag">SQL (Database Testing)</span>
+            <span class="skill-tag">Bug Reporting</span>
+            <span class="skill-tag">SDLC / STLC</span>
             <span class="skill-tag">GitHub</span>
         </div>
 
+        <h3>Eğitim</h3>
+        <div class="edu-item">
+            <strong>[ÜNİVERSİTE ADINI BURAYA YAZ]</strong><br>
+            <span>[BÖLÜMÜNÜ BURAYA YAZ]</span>
+        </div>
+
         <h3>İletişim</h3>
-        <p>Benimle projeleriniz hakkında konuşmak veya sadece profesyonel ağınızı genişletmek isterseniz LinkedIn üzerinden ulaşabilirsiniz.</p>
-        <a href="https://www.linkedin.com/in/RASUL-KULLANICI-ADIN" target="_blank" class="contact-btn">Beni LinkedIn'de Bul</a>
+        <p>Projelerimi incelemek veya iş birliği yapmak için benimle bağlantı kurabilirsiniz.</p>
+        <a href="https://www.linkedin.com/in/RASUL-LINKEDIN-ADIN" target="_blank" class="contact-btn">LinkedIn'de Bağlantı Kur</a>
     </section>
 </div>
 
 </body>
 </html>
+
 
