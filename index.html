@@ -6,28 +6,44 @@
     <title>Rasul Mammadov | QA Automation Tester</title>
     
     <!-- Şriftlər -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Animasiya Kitabxanası -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- İkonlar üçün Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root { 
-            /* Modern Tech Rəng Palitrası */
+            /* Modern Tech Rəng Palitrası - Light Mode (Default) */
             --primary-gradient: linear-gradient(135deg, #3a0ca3, #4361ee, #4cc9f0);
             --deep-navy: #0f172a;
             --electric-blue: #4361ee;
             --cyan-accent: #4cc9f0;
-            --hobby-violet: #7209b7;
             --light-bg: #f8fafc; 
             --dark-text: #1e293b; 
             --glass-white: rgba(255, 255, 255, 0.85);
             --hobby-purple: #5b21b6;
             --hobby-bg: #f5f3ff;
+            --card-bg: white;
+            --border-color: rgba(0, 119, 181, 0.1);
+            --particle-color: rgba(67, 97, 238, 0.5);
+            --line-color: rgba(76, 201, 240, 0.5);
+        }
+
+        /* Dark Mode Rəngləri */
+        body.dark-mode {
+            --light-bg: #0f172a; 
+            --dark-text: #f1f5f9; 
+            --glass-white: rgba(30, 41, 59, 0.85);
+            --hobby-bg: #2d1b4e;
+            --hobby-purple: #a78bfa;
+            --card-bg: #1e293b;
+            --border-color: rgba(76, 201, 240, 0.2);
+            --particle-color: rgba(76, 201, 240, 0.8);
+            --line-color: rgba(76, 201, 240, 0.4);
         }
         
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; transition: background-color 0.3s ease, color 0.3s ease; }
 
         body { 
             font-family: 'Montserrat', sans-serif;
@@ -37,17 +53,18 @@
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             line-height: 1.6;
+            /* Kopyalanmanın qarşısını almaq üçün CSS */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* --- ARXA FON VƏ HEADER --- */
         .header-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50vh;
-            min-height: 350px;
-            max-height: 550px;
+            top: 0; left: 0; width: 100%; height: 50vh;
+            min-height: 350px; max-height: 550px;
             background: var(--primary-gradient);
             z-index: 0;
             clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
@@ -56,12 +73,8 @@
 
         #particle-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; 
-            pointer-events: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
         }
 
         header { 
@@ -93,13 +106,14 @@
             backdrop-filter: blur(5px);
         }
 
-        /* --- DİL DƏYİŞDİRİCİ --- */
+        /* --- DİSPLAY MODELLƏRİ --- */
         .lang-switch { 
             position: absolute; 
             top: 25px; 
             right: 25px; 
             z-index: 100; 
             display: flex;
+            align-items: center;
             gap: 10px;
             animation: slideFromTop 1s cubic-bezier(0.19, 1, 0.22, 1) both;
         }
@@ -109,24 +123,29 @@
             to { transform: translateY(0); opacity: 1; }
         }
         
-        .lang-btn { 
+        .lang-btn, .theme-btn { 
             background: rgba(255, 255, 255, 0.15); 
             color: white; 
             border: 1px solid rgba(255, 255, 255, 0.3); 
-            padding: 8px 16px; 
             cursor: pointer; 
             border-radius: 12px; 
             font-weight: 700; 
             font-size: 0.85rem;
             backdrop-filter: blur(10px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Ölçüləri bərabərləşdirmək üçün */
+            width: 48px;
+            height: 40px;
+            padding: 0;
         }
         
-        .lang-btn.active, .lang-btn:hover { 
+        .lang-btn.active, .lang-btn:hover, .theme-btn:hover { 
             background: white; 
             color: var(--electric-blue); 
             transform: scale(1.1) translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         /* --- ƏSAS KONTEYNER --- */
@@ -141,19 +160,18 @@
             position: relative; 
             z-index: 2; 
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         h3 {
             font-size: 1.6rem;
-            color: var(--dark-blue);
+            color: var(--electric-blue);
             margin-top: 45px;
             margin-bottom: 25px;
             border-bottom: 4px solid var(--cyan-accent);
             padding-bottom: 10px;
             display: inline-block;
             font-weight: 800;
-            border-radius: 0 0 4px 0;
         }
 
         /* --- BACARIQLAR VƏ TAGLAR --- */
@@ -164,41 +182,27 @@
         }
         
         .skill-tag { 
-            background: white; 
-            color: var(--dark-blue); 
-            padding: 14px 22px; 
+            background: var(--card-bg); 
+            color: var(--dark-text); 
+            padding: 12px 20px; 
             border-radius: 14px; 
             font-weight: 600; 
             font-size: 0.95rem; 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             cursor: pointer;
-            user-select: none;
-            border: 1px solid rgba(0, 119, 181, 0.1);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
         }
 
         .skill-tag:hover {
             background: var(--electric-blue);
-            border-color: var(--electric-blue);
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.3);
             color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
         }
 
         .hobby-tag {
-            background: #fdfaff;
-            color: var(--hobby-violet);
-            border-color: rgba(114, 9, 183, 0.1);
-        }
-        .hobby-tag:hover {
-            background: var(--hobby-violet);
-            border-color: var(--hobby-violet);
-            color: white;
-            box-shadow: 0 15px 30px rgba(114, 9, 183, 0.3);
-        }
-
-        .skill-tag:active {
-            transform: scale(0.95);
+            background: var(--hobby-bg);
+            color: var(--hobby-purple);
         }
 
         /* --- TƏHSİL --- */
@@ -206,46 +210,50 @@
             border-left: 6px solid var(--electric-blue); 
             padding: 20px 25px; 
             margin: 25px 0; 
-            background: white;
+            background: var(--card-bg);
             border-radius: 0 16px 16px 0;
-            transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: 0.3s;
         }
 
         .edu-item:hover {
             transform: translateX(10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            background: #fdfdfd;
         }
 
         /* --- DÜYMƏLƏR --- */
         .contact-wrapper {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
             margin-top: 60px;
+            flex-wrap: wrap;
         }
 
         .contact-btn { 
-            display: inline-block; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
             background: var(--primary-gradient); 
             color: white; 
-            padding: 20px 50px; 
+            padding: 18px 35px; 
             text-decoration: none; 
             border-radius: 20px; 
             font-weight: 800; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.4);
+            transition: 0.4s;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
             font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
         }
         
+        .contact-btn.github {
+            background: #24292e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
         .contact-btn:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.6);
-        }
-        
-        .contact-btn:active {
-            transform: scale(0.96);
+            transform: translateY(-5px);
+            filter: brightness(1.1);
         }
 
         /* --- MODAL --- */
@@ -255,7 +263,7 @@
             z-index: 9999; 
             left: 0; top: 0;
             width: 100%; height: 100%; 
-            background-color: rgba(15, 23, 42, 0.85); 
+            background-color: rgba(15, 23, 42, 0.9); 
             backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
@@ -263,70 +271,63 @@
         }
 
         .modal-content {
-            background-color: white;
-            padding: 50px 40px;
-            border-radius: 30px;
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 24px;
             width: 100%; 
-            max-width: 500px;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            max-width: 480px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.4);
             position: relative;
             text-align: center;
-            animation: modalIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            animation: modalIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--dark-text);
         }
 
         @keyframes modalIn {
-            from { transform: translateY(50px) scale(0.9); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 35px;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
             color: #ccc;
             cursor: pointer;
-            transition: 0.3s;
         }
-        
-        .close-modal:hover { color: var(--dark-blue); transform: rotate(90deg); }
 
         .lang-en { display: none; }
-        
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            color: #64748b;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
+        footer { text-align: center; padding: 50px 20px; color: #64748b; font-weight: 600; }
 
         /* --- MOBİL AYARLAR --- */
         @media screen and (max-width: 480px) {
-            .header-bg { height: 42vh; }
-            header { padding-top: 90px; }
-            .container { width: 94%; padding: 30px 20px; margin-top: -55px; }
-            .skill-tag { flex-grow: 1; text-align: center; padding: 12px 16px; font-size: 0.9rem; }
-            .contact-btn { width: 100%; padding: 18px; font-size: 1rem; }
+            .container { padding: 30px 20px; margin-top: -55px; }
+            .skill-tag { flex-grow: 1; text-align: center; }
+            .contact-btn { width: 100%; padding: 16px; justify-content: center; }
+            .lang-switch { top: 15px; right: 15px; }
+            .lang-btn, .theme-btn { width: 42px; height: 36px; font-size: 0.75rem; }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onkeydown="return disableShortcuts(event);">
 
 <div class="header-bg"></div>
 <canvas id="particle-canvas"></canvas>
 
-<!-- Modal Pəncərə -->
 <div id="skill-modal" class="modal" onclick="closeModalOutside(event)">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <h3 id="modal-title" style="margin-top: 0; border: none; color: var(--electric-blue); font-size: 2rem;">Bacarıq</h3>
-        <p id="modal-desc" style="font-size: 1.2rem; color: #475569; line-height: 1.7;"></p>
+        <p id="modal-desc" style="font-size: 1.2rem; line-height: 1.7;"></p>
     </div>
 </div>
 
 <header>
     <div class="lang-switch">
+        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" title="Rejimi dəyiş">
+            <i class="fas fa-moon" id="theme-icon"></i>
+        </button>
         <button class="lang-btn active" id="btn-az" onclick="setLanguage('az')">AZ</button>
         <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
@@ -338,23 +339,21 @@
 
 <div class="container" data-aos="fade-up" data-aos-duration="1200">
     
-    <!-- AZƏRBAYCAN DİLİ -->
     <div class="lang-az">
         <section>
             <h3 data-aos="fade-right">Haqqımda</h3>
-            <p data-aos="fade-up" data-aos-delay="200" style="font-size: 1.1rem; color: #475569;">Salam! Mən Rəsul, proqram təminatının keyfiyyətinə (QA) fokuslanmış mütəxəssisəm. Manual və Automation testləri ilə yanaşı, SQL vasitəsilə verilənlər bazası bütövlüyünü yoxlamaq üzrə ixtisaslaşmışam.</p>
+            <p style="font-size: 1.1rem;">Salam! Mən Rəsul, proqram təminatının keyfiyyətinə (QA) fokuslanmış mütəxəssisəm. Manual və Automation testləri ilə yanaşı, SQL vasitəsilə verilənlər bazası bütövlüyünü yoxlamaq üzrə ixtisaslaşmışam.</p>
         </section>
 
         <section>
             <h3 data-aos="fade-right">Texniki Bacarıqlar</h3>
-            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px; font-weight: 500;">(Ətraflı məlumat üçün üzərinə vurun)</p>
             <div class="skill-group">
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="100" onclick="openModal('Manual Testing', 'İstifadəçi gözü ilə proqramın funksional və qeyri-funksional test edilməsi. Test ssenarilərinin yazılması və icrası.')">Manual Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="200" onclick="openModal('Automation Testing', 'Selenium, Cypress və ya digər alətlərlə təkrarlanan testlərin avtomatlaşdırılmış skriptlər vasitəsilə icrası.')">Automation Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="300" onclick="openModal('SQL / Database', 'Verilənlər bazasında məlumatların doğruluğunu yoxlamaq üçün mürəkkəb sorğuların yazılması.')">SQL (Database)</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="400" onclick="openModal('Bug Reporting', 'Tapılmış xətaların Jira və ya Trello kimi alətlərdə detallı sənədləşdirilməsi və izlənilməsi.')">Bug Reporting</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="500" onclick="openModal('API Testing', 'Postman vasitəsilə API-ların sorğu və cavablarının düzgünlüyünün yoxlanılması.')">API Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="600" onclick="openModal('GitHub', 'Kodların versiya idarəetmə sistemi. Komanda ilə iş və CI/CD proseslərinə inteqrasiya.')">GitHub / Git</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="100" onclick="openModal('Manual Testing', 'İstifadəçi gözü ilə proqramın funksional test edilməsi.')">Manual Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="200" onclick="openModal('Automation Testing', 'Selenium, Cypress ilə testlərin avtomatlaşdırılması.')">Automation Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="300" onclick="openModal('SQL', 'DB bütövlüyünü yoxlamaq üçün sorğuların yazılması.')">SQL (Database)</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="400" onclick="openModal('Bug Reporting', 'Xətaların Jira-da detallı sənədləşdirilməsi.')">Bug Reporting</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="500" onclick="openModal('API Testing', 'Postman ilə API sorğularının yoxlanılması.')">API Testing</span>
+                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="600" onclick="openModal('GitHub', 'Versiya idarəetmə və komanda işi.')">GitHub / Git</span>
             </div>
         </section>
 
@@ -363,61 +362,78 @@
             <div class="skill-group">
                 <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="100">Qrafik Dizayn</span>
                 <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="200">Musiqi Prodüserliyi</span>
-                <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="300">SMM (Social Media Marketing)</span>
+                <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="300">SMM</span>
             </div>
         </section>
 
         <section>
             <h3 data-aos="fade-right">Təhsil</h3>
-            <div class="edu-item" data-aos="fade-left" data-aos-delay="200">
-                <strong style="font-size: 1.1rem;">Azərbaycan Dövlət Aqrar Universiteti</strong><br>
-                <span style="color: #64748b; font-weight: 500;">Bakalavr dərəcəsi / Biznesin idarə edilməsi</span>
+            <div class="edu-item" data-aos="fade-left">
+                <strong>CodeSmile Academy</strong><br>
+                <span>QA Training (Manual & Automation)</span>
+            </div>
+            <div class="edu-item" data-aos="fade-left" data-aos-delay="100">
+                <strong>Azərbaycan Dövlət Aqrar Universiteti</strong><br>
+                <span>Bakalavr dərəcəsi / Biznesin idarə edilməsi</span>
             </div>
         </section>
 
         <div class="contact-wrapper">
-            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn" data-aos="fade-up" data-aos-delay="500">LinkedIn Profilim</a>
+            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" class="contact-btn github">
+                <i class="fab fa-github"></i> GitHub
+            </a>
         </div>
     </div>
 
-    <!-- İNGİLİS DİLİ -->
     <div class="lang-en">
         <section>
             <h3>About Me</h3>
-            <p style="font-size: 1.1rem; color: #475569;">I am Rasul, a QA specialist dedicated to software excellence. I specialize in Manual and Automation testing, ensuring high performance and data integrity using SQL.</p>
+            <p style="font-size: 1.1rem;">I am Rasul, a QA specialist dedicated to software excellence. I specialize in Manual and Automation testing, ensuring high performance and data integrity using SQL.</p>
         </section>
 
         <section>
             <h3>Technical Skills</h3>
             <div class="skill-group">
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="100" onclick="openModal('Manual Testing', 'Functional and non-functional testing from a user perspective.')">Manual Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="200" onclick="openModal('Automation Testing', 'Creating automated test scripts using Selenium or Cypress.')">Automation Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="300" onclick="openModal('SQL / Database', 'Writing queries to verify data integrity and accuracy.')">SQL (Database)</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="400" onclick="openModal('Bug Reporting', 'Reporting and tracking issues via Jira or similar tools.')">Bug Reporting</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="500" onclick="openModal('API Testing', 'Verifying API responses and requests using Postman.')">API Testing</span>
-                <span class="skill-tag" data-aos="zoom-in" data-aos-delay="600" onclick="openModal('GitHub', 'Version control and collaboration for test scripts.')">GitHub / Git</span>
+                <span class="skill-tag" onclick="openModal('Manual Testing', 'Functional testing from user perspective.')">Manual Testing</span>
+                <span class="skill-tag" onclick="openModal('Automation Testing', 'Automating tests with Selenium and Cypress.')">Automation Testing</span>
+                <span class="skill-tag" onclick="openModal('SQL', 'Writing queries for database verification.')">SQL (Database)</span>
+                <span class="skill-tag" onclick="openModal('Bug Reporting', 'Documenting issues via Jira.')">Bug Reporting</span>
+                <span class="skill-tag" onclick="openModal('API Testing', 'Testing API requests with Postman.')">API Testing</span>
+                <span class="skill-tag" onclick="openModal('GitHub', 'Version control and collaboration.')">GitHub / Git</span>
             </div>
         </section>
 
         <section>
             <h3>Hobbies & Interests</h3>
             <div class="skill-group">
-                <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="100">Graphic Design</span>
-                <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="200">Music Production</span>
-                <span class="skill-tag hobby-tag" data-aos="zoom-in" data-aos-delay="300">SMM</span>
+                <span class="skill-tag hobby-tag">Graphic Design</span>
+                <span class="skill-tag hobby-tag">Music Production</span>
+                <span class="skill-tag hobby-tag">SMM</span>
             </div>
         </section>
 
         <section>
             <h3>Education</h3>
             <div class="edu-item">
-                <strong style="font-size: 1.1rem;">Azerbaijan State Agricultural University</strong><br>
-                <span style="color: #64748b; font-weight: 500;">Bachelor's Degree / Business Administration</span>
+                <strong>CodeSmile Academy</strong><br>
+                <span>QA Training (Manual & Automation)</span>
+            </div>
+            <div class="edu-item">
+                <strong>Azerbaijan State Agricultural University</strong><br>
+                <span>Bachelor's Degree / Business Administration</span>
             </div>
         </section>
 
         <div class="contact-wrapper">
-            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">Connect on LinkedIn</a>
+            <a href="https://www.linkedin.com/in/r%C9%99sul-m%C9%99mm%C9%99dov-315b6a39a" target="_blank" class="contact-btn">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" class="contact-btn github">
+                <i class="fab fa-github"></i> GitHub
+            </a>
         </div>
     </div>
 
@@ -429,20 +445,37 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({ 
-        duration: 1000, 
-        once: true,
-        offset: 80
-    });
+    AOS.init({ duration: 1000, once: true });
 
+    // Kopyalama qısayollarını deaktiv edən funksiya
+    function disableShortcuts(e) {
+        if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 86 || e.keyCode === 83) || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+            e.keyCode === 123) {
+            return false;
+        }
+    }
+
+    // Dil funksiyası
     function setLanguage(lang) {
         document.querySelectorAll('.lang-az').forEach(el => el.style.display = lang === 'az' ? 'block' : 'none');
         document.querySelectorAll('.lang-en').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
-        
         document.getElementById('btn-az').classList.toggle('active', lang === 'az');
         document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-        
         AOS.refresh(); 
+    }
+
+    // Theme Toggle funksiyası
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('theme-icon');
+        body.classList.toggle('dark-mode');
+        
+        if(body.classList.contains('dark-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+        }
     }
 
     const modal = document.getElementById("skill-modal");
@@ -493,10 +526,9 @@
             if (this.y < 0) this.y = canvas.height;
         }
         draw() {
-            ctx.fillStyle = 'rgba(76, 201, 240, 0.5)'; 
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
+            // CSS dəyişənindən rəngi götürürük
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim(); 
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
         }
     }
 
@@ -508,6 +540,8 @@
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--line-color').trim();
+        
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
@@ -515,10 +549,9 @@
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const dist = Math.sqrt(dx*dx + dy*dy);
-                
                 if (dist < 140) { 
                     ctx.beginPath();
-                    ctx.strokeStyle = `rgba(76, 201, 240, ${0.5 - dist/200})`;
+                    ctx.strokeStyle = lineColor.replace('0.5', (0.5 - dist/280).toString());
                     ctx.lineWidth = 1.2; 
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
@@ -529,13 +562,12 @@
         requestAnimationFrame(animate);
     }
 
-    resize();
-    init();
-    animate();
+    resize(); init(); animate();
 </script>
 
 </body>
 </html>
+
 
 
 
